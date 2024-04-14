@@ -43,3 +43,4 @@ build/
 /src/main/resources/META-INF/maven/archetype.xml
 /src/main/resources/archetype-resources/src/main/java/App.java
 /src/main/resources/archetype-resources/src/test/java/AppTest.java
+/.idea/vcs.xml
