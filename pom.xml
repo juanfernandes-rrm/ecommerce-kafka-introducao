@@ -7,6 +7,13 @@
     <packaging>pom</packaging>
     <name>Archetype - ecommerce</name>
   <url>http://maven.apache.org</url>
+    <modules>
+        <module>service-email</module>
+      <module>service-fraud-detector</module>
+      <module>service-log</module>
+      <module>service-new-order</module>
+      <module>common-kafka</module>
+    </modules>
 
     <dependencies>
     <dependency>
