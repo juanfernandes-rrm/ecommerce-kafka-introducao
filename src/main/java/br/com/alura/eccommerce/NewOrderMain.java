@@ -1,19 +1,25 @@
 package br.com.alura.eccommerce;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class NewOrderMain {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        try (var dispatcher = new KafkaDispatcher()) {
-            var key = UUID.randomUUID().toString();
-            var value = key + ",456,789";
-            var email = "Thank you for your order! We are processing your order!";
+        try (var orderDispatcher = new KafkaDispatcher<Order>()) {
+            try (var emailDispatcher = new KafkaDispatcher<Email>()) {
+                var userId = UUID.randomUUID().toString();
+                var orderId = UUID.randomUUID().toString();
+                var amount = new BigDecimal(Math.random() * 5000 + 1);
+                var order = new Order(userId, orderId, amount);
 
-            for (int i = 0; i < 10; i++) {
-                dispatcher.send("ECOMMERCE_NEW_ORDER", key, value);
-                dispatcher.send("ECOMMERCE_SEND_EMAIL", key, email);
+                var email = new Email("Your order", "Thank you for your order! We are processing your order!");
+
+                for (int i = 0; i < 10; i++) {
+                    orderDispatcher.send("ECOMMERCE_NEW_ORDER", userId, order);
+                    emailDispatcher.send("ECOMMERCE_SEND_EMAIL", userId, email);
+                }
             }
         }
     }
